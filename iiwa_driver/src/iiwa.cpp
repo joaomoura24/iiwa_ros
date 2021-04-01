@@ -343,13 +343,9 @@ namespace iiwa_ros {
             ROS_WARN("Warning: client application already connected!\n");
             return true;
         }
-        ROS_WARN("remote host: %s", _remote_host.c_str());
-        ROS_WARN("remote port: %d", _port);
-        bool vartest =  _fri_connection.open(_port, _remote_host.c_str());
-        ROS_WARN("connection: %d", vartest);
-        // ROS_ERROR("stop here");
-        return vartest;
-    }
+        ROS_WARN("The configuration of the IP is NOT used. Only the port matters!");
+        return  _fri_connection.open(_port, _remote_host.c_str());
+      }
 
     void Iiwa::_disconnect_fri()
     {

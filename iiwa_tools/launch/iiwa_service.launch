@@ -31,6 +31,6 @@
 
   <!-- launch the IK server -->
   <node name="iiwa_service" pkg="iiwa_tools" type="iiwa_service" respawn="false"
-    output="screen" ns="/iiwa"/>
+    output="screen"/>
 
 </launch>

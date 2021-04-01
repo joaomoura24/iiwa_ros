@@ -340,11 +340,15 @@ namespace iiwa_ros {
     {
         if (_fri_connection.isOpen()) {
             // TO-DO: Use ROS output
-            // printf("Warning: client application already connected!\n");
+            ROS_WARN("Warning: client application already connected!\n");
             return true;
         }
-
-        return _fri_connection.open(_port, _remote_host.c_str());
+        ROS_WARN("remote host: %s", _remote_host.c_str());
+        ROS_WARN("remote port: %d", _port);
+        bool vartest =  _fri_connection.open(_port, _remote_host.c_str());
+        ROS_WARN("connection: %d", vartest);
+        // ROS_ERROR("stop here");
+        return vartest;
     }
 
     void Iiwa::_disconnect_fri()
@@ -358,6 +362,7 @@ namespace iiwa_ros {
         if (!_fri_connection.isOpen()) {
             // TO-DO: Use ROS output
             // printf("Error: client application is not connected!\n");
+            ROS_WARN("Error: client application is not connected!" );
             return false;
         }
 

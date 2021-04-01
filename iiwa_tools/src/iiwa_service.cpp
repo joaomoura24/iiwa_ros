@@ -341,7 +341,7 @@ namespace iiwa_tools {
     {
         ros::NodeHandle n_p("~");
 
-        n_p.param<std::string>("service/robot_description", _robot_description, "/robot_description");
+        n_p.param<std::string>("service/robot_description", _robot_description, "robot_description");
         n_p.param<std::string>("service/end_effector", _end_effector, "iiwa_link_ee");
         n_p.param<std::string>("service/fk_service_name", _fk_service_name, "iiwa_fk_server");
         n_p.param<std::string>("service/ik_service_name", _ik_service_name, "iiwa_ik_server");

@@ -48,16 +48,19 @@
     <remap from="/move_group/fake_controller_joint_states" to="/$(arg robot_name)/move_group/fake_controller_joint_states" />
     <remap from="/get_planning_scene" to="/$(arg robot_name)/get_planning_scene" />
 
-    <!-- Start the FRI driver, if requested -->
-    <include if="$(arg driver)" file="$(find iiwa_driver)/launch/iiwa_bringup.launch">
-        <arg name="controller" value="PositionTrajectoryController"/>
-    </include>
 
     <!--Put in a namespace to allow many instances to run-->
     <group ns="$(arg robot_name)" >
+
+        <!-- Start the FRI driver, if requested -->
+        <include if="$(arg driver)" file="$(find iiwa_driver)/launch/iiwa_bringup.launch">
+            <arg name="controller" value="PositionTrajectoryController"/>
+            <arg name="robot_name" value="$(arg robot_name)"/>
+        </include>
+
         <!-- Load move_group -->
         <include file="$(find iiwa_moveit)/launch/move_group.launch">
-            <arg name="publish_monitored_planning_scene" value="false" />
+            <arg name="publish_monitored_planning_scene" value="true" />
             <arg name="fake_execution" value="false"/>
             <arg name="hardware_interface" value="$(arg hardware_interface)"/>
             <arg name="robot_name" value="$(arg robot_name)"/>

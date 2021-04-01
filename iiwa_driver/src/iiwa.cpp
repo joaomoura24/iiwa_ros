@@ -344,7 +344,18 @@ namespace iiwa_ros {
             return true;
         }
         ROS_WARN("The configuration of the IP is NOT used. Only the port matters!");
-        return  _fri_connection.open(_port, _remote_host.c_str());
+        // The FRI socket library uses options that do not take in to account the
+        // IP address specified. The option makes the socket binding with any
+        // IP address in the network, so only the port matters.
+        // The option used is: INADDR_ANY
+        // Reference: https://man7.org/linux/man-pages/man7/ip.7.html
+
+        // In case, we want to specify the IP.
+        // This would require changes in the FRI code too, but an example call
+        // is given below.
+        // return  _fri_connection.open(_port, _remote_host.c_str());
+
+        return  _fri_connection.open(_port, nullptr);
       }
 
     void Iiwa::_disconnect_fri()

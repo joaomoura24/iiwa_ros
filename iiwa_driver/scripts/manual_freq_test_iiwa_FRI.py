@@ -16,11 +16,14 @@ from sensor_msgs.msg import JointState
 from std_msgs.msg import Float64MultiArray
 from std_msgs.msg import MultiArrayDimension
 
+from topic_tools.srv import MuxSelect
+
 # ------------------------------------------------------------
 #  REAL ROBOT
 # ------------------------------------------------------------
 NDOF = 7
-REAL_ROBOT_TARGET_JOINT_COMMAND_TOPIC = "PositionController/command" # commands joint states on this topic
+# REAL_ROBOT_TARGET_JOINT_COMMAND_TOPIC = "PositionController/command" # commands joint states on this topic
+REAL_ROBOT_TARGET_JOINT_COMMAND_TOPIC = "Manual/command" # commands joint states on this topic
 REAL_ROBOT_JOINT_STATE_TOPIC = "joint_states"
 
 min_joints = [-169, -100, -169, -119, -169, -119, -173]
@@ -46,6 +49,10 @@ class JointPosParser():
         if robot_name==None:
             rospy.logerr(f"No robot name was given.")
             return False
+
+        select_srv = rospy.ServiceProxy(f"{robot_name}_mux_joint_position/select", MuxSelect)
+        # activate manual commanding
+        select_srv(f"{robot_name}/Manual/command")
 
         # Setup subscriber that reads commanded robot state
         subscr_real_state_topic_name =  f"{robot_name}/{REAL_ROBOT_JOINT_STATE_TOPIC}"
@@ -123,6 +130,7 @@ class JointPosParser():
         rospy.loginfo("%s: Shutting down manual joint position node ", self.name)
         # Shut down write callback
         # self.writeCallbackTimer.shutdown()
+
         rospy.sleep(1.0)
         rospy.signal_shutdown("Node is done")
 
@@ -140,6 +148,7 @@ if __name__=="__main__":
             rospy.logerr(f"Target configuration was given to the robot has wrong dimensions")
         else:
             np.clip(goal_q, min_joints, max_joints, out=goal_q)
+
 
     # Initialize node
     rospy.init_node("ros_Traj_interface", anonymous=True)

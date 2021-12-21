@@ -33,7 +33,7 @@ T = 1
 dt = 0.01
 
 # number of interpolation steps
-NUM_STEPS  = 1000 #T/dt
+NUM_STEPS  = 1500 #T/dt
 
 # frequency
 FREQ = 200
